@@ -58,3 +58,64 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	w.Write(res)
 }
+
+func FilterBooksByAuthor(w http.ResponseWriter, r *http.Request) {
+	author := r.URL.Query().Get("author")
+	if author == "" {
+		http.Error(w, "Author query parameter is required", http.StatusBadRequest)
+		return
+	}
+
+	filteredBooks, err := store.FilterBooksByAuthor(author)
+	if err != nil {
+		fmt.Printf("Error filtering books by author: %v\n", err)
+		http.Error(w, "Error processing request", http.StatusInternalServerError)
+		return
+	}
+
+	if len(filteredBooks) == 0 {
+		http.Error(w, "No books found matching the author", http.StatusNotFound)
+		return
+	}
+
+	res, err := json.Marshal(filteredBooks)
+	if err != nil {
+		fmt.Printf("Failed to marshal filtered books: %v\n", err)
+		http.Error(w, "Failed to process request", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(res)
+}
+
+func FilterBooksByGenre(w http.ResponseWriter, r *http.Request) {
+	genre := r.URL.Query().Get("genre")
+	if genre == "" {
+		http.Error(w, "Genre query parameter is required", http.StatusBadRequest)
+		return
+	}
+
+	filteredBooks, err := store.FilterBooksByGenre(genre)
+	if err != nil {
+		fmt.Printf("Error filtering books by genre: %v\n", err)
+		http.Error(w, "Error processing request", http.StatusInternalServerError)
+		return
+	}
+
+	if len(filteredBooks) == 0 {
+		http.Error(w, "No books found matching the genre", http.StatusNotFound)
+		return
+	}
+
+	res, err := json.Marshal(filteredBooks)
+	if err != nil {
+		fmt.Printf("Failed to marshal filtered books: %v\n", err)
+		http.Error(w, "Failed to process request", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}

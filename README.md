@@ -4,6 +4,14 @@ A Programming exercise I performed to implement a simple book management softwar
 
 ## OVERVIEW
 
+## TODOs:
+
+* all the tests
+
+* include a Publication date field on the book model and schema, and also filtering and cli support for this new field 
+
+* include updating for books, removal of books from collections, and deletion for books and collections
+
 ## SETUP 
 
 ### PREREQUISITES
@@ -17,6 +25,8 @@ A Programming exercise I performed to implement a simple book management softwar
 * an OS that can support the rest of these requirements
 
 ### STEPS
+
+Note that some of these command may need to be ran slightly differently depending on the operating system you're executing them in as they've only been tested on MacOS. The application itself should be good to run on Mac OS, Linux, and Windows.
 
 Start by opening a terminal window and pulling the MySQL image from Docker Hub
 
@@ -83,4 +93,64 @@ make get-books
 
 ## EXAMPLES
 
-Please complete the previous SETUP section from start to finish or these examples aren't going to work.
+Please complete the previous SETUP section from start to finish or these examples aren't going to work. In additon to to the previous coonstraint some of these examples are dependent on being executed directly after the SETUP and in the order listed below. Sequentially dependent examples are Annotated as: `SEQUENTIALLY_DEPENDANT`
+
+Create a book:
+
+```bash
+./librarian create-book "the running grave" "J.K.Rowling" "crime fiction" 
+```
+
+Filter all books by author:
+
+```bash
+./librarian filter-by-author --author="J.K.Rowling"
+```
+
+Filter all books by genre:
+
+```bash
+./librarian filter-by-genre --genre="fantasy"
+```
+
+Create a collection:
+
+```bash
+./librarian create-collection "J.R.Tolkien"
+```
+
+Get All Books From a Collection
+
+```bash
+./librarian get-collection-books 1
+```
+
+Add a book to a collection `SEQUENTIALLY_DEPENDANT`:
+
+```bash
+./librarian add-book 1 6
+```
+
+List all collections:
+
+```bash
+./librarian get-collections
+```
+
+Filter all books in a collection by genre:
+
+```bash
+./librarian filter-collection-by-genre 1 --genre="fantasy"
+```
+
+Add a book to the first collection `SEQUENTIALLY_DEPENDANT`(I know it's not J.K.Rowling but I don't realy care either):
+
+```bash
+./librarian add-book 1 4
+```
+
+Filter all books in a collection by author:
+
+```bash
+./librarian filter-collection-by-author 1 --author="J.K.Rowling"
+```

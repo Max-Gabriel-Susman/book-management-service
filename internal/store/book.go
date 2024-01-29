@@ -16,3 +16,21 @@ func GetAllBooks() []models.Book {
 	db.Find(&books)
 	return books
 }
+
+func FilterBooksByAuthor(author string) ([]models.Book, error) {
+	var books []models.Book
+	err := db.Where("author = ?", author).Find(&books).Error
+	if err != nil {
+		return nil, err
+	}
+	return books, nil
+}
+
+func FilterBooksByGenre(genre string) ([]models.Book, error) {
+	var books []models.Book
+	err := db.Where("genre = ?", genre).Find(&books).Error
+	if err != nil {
+		return nil, err
+	}
+	return books, nil
+}
